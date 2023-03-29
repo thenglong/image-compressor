@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "types": "modules",
+  "type": "module",
   "scripts": {
     "dev": "nodemon .",
     "start": "node ."
@@ -12,7 +12,12 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.18.2"
+    "express": "^4.18.2",
+    "imagemin": "^8.0.1",
+    "imagemin-jpeg-recompress": "^7.1.0",
+    "imagemin-pngquant": "^9.0.2",
+    "mime-types": "^2.1.35",
+    "multer": "^1.4.5-lts.1"
   },
   "devDependencies": {
     "nodemon": "^2.0.22"
