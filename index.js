@@ -2,10 +2,13 @@ import express from "express";
 import multer from "multer";
 import mime from "mime-types";
 import { compressFile } from "./compress-file.js";
+import { getFileHash } from "./create-file-hash.js";
 
 const app = express();
 
 const port = process.env.PORT || 4000;
+
+const fileMap = {};
 
 app.listen(port, () => {
   console.log(`🚀 Server up and running on port ${port}`);
@@ -27,7 +30,16 @@ app.post("/api/v1/compress-one", upload.single("file"), async (req, res) => {
     res.status(400).send("min and max value not valid");
   }
 
-  const compressedBuffer = await compressFile(req.file.buffer, { min, max });
+  const fileHash = getFileHash(req.file.buffer);
+
+  let compressedBuffer;
+  if (fileMap[fileHash]) {
+    compressedBuffer = fileMap[fileHash];
+  } else {
+    compressedBuffer = await compressFile(req.file.buffer, { min, max });
+    fileMap[fileHash] = compressedBuffer;
+  }
+
 
   res.format({
     "image/*": function () {
